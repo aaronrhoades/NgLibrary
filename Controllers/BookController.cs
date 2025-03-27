@@ -26,5 +26,19 @@ namespace NgLibrary.Controllers
 
             return Ok(books);
         }
+
+        // GET: BookController/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetBookById(string id)
+        {
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            return Ok(book);
+        }
+
+
     }
 }
