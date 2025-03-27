@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NgLibrary;
 using NgLibrary.Data;
 using NgLibrary.Extensions;
 using NgLibrary.Models;
@@ -46,6 +48,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.ApplyMigrations();
 }
+
+// start example endpoint that requires authorization
+app.MapGet("createDB", async (ClaimsPrincipal claims, DataContext context) =>
+{
+    Test.UseFaker(context);
+});
 
 app.UseHttpsRedirection();
 
