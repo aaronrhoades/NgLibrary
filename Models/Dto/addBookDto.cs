@@ -1,12 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NgLibrary.Models
+﻿namespace NgLibrary.Models.Dto
 {
-    public class Book : IRentable
+    public class addBookDto
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key] public string Id { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string CoverImg { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;

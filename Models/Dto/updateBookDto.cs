@@ -1,18 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NgLibrary.Models
+﻿namespace NgLibrary.Models.Dto
 {
-    public class Book : IRentable
+    public class updateBookDto
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key] public string Id { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string CoverImg { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public string Publisher { get; set; } = string.Empty;
-        public DateTime? PublishedDate { get; set; }
+        public DateTime? PublishedDate { get; set; } 
         public string Category { get; set; } = string.Empty;
         public string ISBN { get; set; } = string.Empty;
         public int PageCount { get; set; }
