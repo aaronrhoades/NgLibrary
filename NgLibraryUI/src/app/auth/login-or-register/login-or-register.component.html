@@ -1,0 +1,11 @@
+@if(isLogin) {
+    <app-login></app-login>
+} @else {
+    <app-register></app-register>
+}
+
+@if(isLogin) {
+    <p><a (click)="handleClickAndToggle($event)" href="#">Register for a new account</a></p>
+} @else {
+    <p>Already registered? <a (click)="handleClickAndToggle($event)" href="#">Login</a></p>
+}
