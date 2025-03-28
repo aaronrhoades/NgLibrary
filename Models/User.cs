@@ -4,7 +4,6 @@ namespace NgLibrary.Models
 {
   public class User : IdentityUser
   {
-        public ICollection<Review> Reviews { get; set; } = null!;
         public Role? Role { get; set; }
     }
 
