@@ -52,7 +52,7 @@ namespace NgLibrary.Controllers
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(CreateReview), new { id = review.Id }, review);
+            return CreatedAtAction(nameof(CreateReview), new { userId = review.UserId, bookId = review.BookId }, review);
         }
 
         // PUT: ReviewController/5
