@@ -47,7 +47,8 @@ namespace NgLibrary.Controllers
             review.BookId = addReviewDto.BookId;
             review.ReviewText = addReviewDto.ReviewText;
             review.Rating = addReviewDto.Rating;
-
+            review.DatePosted = addReviewDto.DatePosted;
+            review.LastUpdated = addReviewDto.LastUpdated;
 
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
@@ -67,7 +68,8 @@ namespace NgLibrary.Controllers
             review.BookId = updateReviewDto.BookId;
             review.ReviewText = updateReviewDto.ReviewText;
             review.Rating = updateReviewDto.Rating;
-
+            review.DatePosted = updateReviewDto.DatePosted;
+            review.LastUpdated = updateReviewDto.LastUpdated;
 
             _context.Reviews.Update(review);
             await _context.SaveChangesAsync();
