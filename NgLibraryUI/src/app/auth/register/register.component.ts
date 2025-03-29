@@ -1,8 +1,9 @@
-import { FormGroup, FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, output } from '@angular/core';
 import { matchFieldsValidator } from '../../validators/match-fields';
 import { AuthService } from '../auth.service';
 import { UserRegistration } from '../../models/user-registration';
+import { UserRegistrationResponse } from '../../models/user-registration-response';
 
 @Component({
     selector: 'app-register',
@@ -34,11 +35,21 @@ export class RegisterComponent {
                 password: this.registerForm.value.password!
             };
 
-            console.log('Form Submitted!', registration);
-            this.registerForm.reset(); // Reset the form after successful registration
-            this.justRegistered.emit(true); // Emit event to indicate successful registration
+            this.authService.register(registration).subscribe({
+                next: (response: UserRegistrationResponse) => {
+                    this.justRegistered.emit(true); // Emit event to indicate successful registration
+                    this.registerForm.reset(); // Reset the form after successful registration
+                    console.log('Registration successful!', response);
+                    // Handle successful registration here, such as redirecting to a login page or dashboard
+                }
+                , error: (error) => {
+                    console.error('Registration failed!', error);
+                    // Handle registration error here, such as displaying an error message to the user
+                }
+            });
         } else {
-            console.log('Form is invalid!');
+            //Code should not reach here as the submit button should be disabled if the form is invalid
+            console.error('registerForm is invalid!');
         }
     }
 }
