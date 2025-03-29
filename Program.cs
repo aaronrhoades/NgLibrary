@@ -16,7 +16,8 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:63435")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
         });
 });
 
@@ -55,11 +56,11 @@ app.MapGet("createDB", async (ClaimsPrincipal claims, DataContext context) =>
     Test.UseFaker(context);
 });
 
+app.UseCors("Development");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
-app.UseCors();
 
 app.MapControllers();
 
