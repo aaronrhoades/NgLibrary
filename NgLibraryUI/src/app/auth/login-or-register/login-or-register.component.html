@@ -1,11 +1,14 @@
-@if(isLogin) {
-    <app-login></app-login>
-} @else {
-    <app-register></app-register>
+<!-- Display a message if user has just registered-->
+@if(showJustRegistered) {
+    <div class="alert alert-success" role="alert">
+        Registration successful! Please log in to continue.
+    </div>
 }
 
 @if(isLogin) {
+    <app-login></app-login>
     <p><a (click)="handleClickAndToggle($event)" href="#">Register for a new account</a></p>
 } @else {
+    <app-register (justRegistered)="handleRegistrationSuccess($event)"></app-register>
     <p>Already registered? <a (click)="handleClickAndToggle($event)" href="#">Login</a></p>
 }

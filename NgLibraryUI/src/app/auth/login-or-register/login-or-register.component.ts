@@ -13,6 +13,7 @@ export class LoginOrRegisterComponent {
   // This component is used to switch between login and register forms
   // It uses a simple boolean to toggle between the two forms
   isLogin: boolean = true; // Default to login form
+  showJustRegistered: boolean = false;
 
   toggleForm() {
     this.isLogin = !this.isLogin; // Toggle the form type
@@ -20,5 +21,11 @@ export class LoginOrRegisterComponent {
   handleClickAndToggle(event: Event) {
     event.preventDefault();
     this.toggleForm();
+  }
+  handleRegistrationSuccess(success: boolean) {
+    if (success) {
+      this.isLogin = true; // Switch to login form after successful registration
+      this.showJustRegistered = true; // Show a message indicating successful registration
+    }
   }
 }

@@ -1,1 +1,15 @@
-<p>register works!</p>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <label for="email">Email: </label>
+    <input id="email" type="text" formControlName="email">
+    <label for="password">Password: </label>
+    <input id="password" type="password" formControlName="password">
+    <label for="confirmPassword">Confirm Password: </label>
+    <input id="confirmPassword" type="password" formControlName="confirmPassword">
+    @if(registerForm.errors?.['confirmPasswordMismatch'] && 
+        (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)) {
+            <div>
+                Passwords do not match.
+            </div>
+    }
+    <button type="submit" [disabled]="!registerForm.valid">Submit</button>
+</form>
