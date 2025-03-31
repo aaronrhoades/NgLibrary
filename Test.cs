@@ -1,6 +1,5 @@
 ﻿
 using Bogus;
-using Microsoft.EntityFrameworkCore;
 using NgLibrary.Data;
 using NgLibrary.Models;
 namespace NgLibrary
