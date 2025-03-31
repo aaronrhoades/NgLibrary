@@ -12,7 +12,7 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './book.component.html',
   styleUrl: './book.component.css'
 })
-export class BookComponent implements OnInit {
+export class BookDetailsComponent implements OnInit {
   book$!: Observable<Book>;
 
   constructor(private route: ActivatedRoute, private bookService: BookService){ }
