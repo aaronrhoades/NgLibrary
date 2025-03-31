@@ -1,0 +1,12 @@
+@if(book$ | async; as book) {
+
+    <h2>{{book.title}} by {{book.author}}</h2>
+    <img [src]="book.coverImg" alt="{{book.title}} cover" style="max-width: 200px; max-height: 300px;"/><br/>
+    <p>{{book.description}}</p>
+    <!-- <p>Published on: {{book.publishedDate | date}}</p> -->
+    <p>ISBN: {{book.isbn}}</p>
+    <!-- <p>Pages: {{book.pages}}</p> -->
+    <p>Publisher: {{book.publisher}}</p>
+    
+    <p><a [routerLink]="['/books']">Back to all books</a></p>
+}
