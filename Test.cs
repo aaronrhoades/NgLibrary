@@ -1,5 +1,6 @@
 ﻿
 using Bogus;
+using Microsoft.EntityFrameworkCore;
 using NgLibrary.Data;
 using NgLibrary.Models;
 namespace NgLibrary
@@ -12,7 +13,7 @@ namespace NgLibrary
             var ISBNGenerator = new Randomizer().Replace("###-#-###-#####-#");
             var random = new Randomizer();
 
-            var categories = new[] {"Action", "Adventure", "Comedy", "Romance", "Fiction", "Non-Fiction"};
+            var categories = new[] { "Action", "Adventure", "Comedy", "Romance", "Fiction", "Non-Fiction" };
 
             var testBooks = new Faker<Book>()
                 //Ensure all properties have rules. By default, StrictMode is false
@@ -36,16 +37,14 @@ namespace NgLibrary
                 .RuleFor(b => b.PageCount, f => f.Random.Number(1, 100000))
                 .RuleFor(b => b.ISBN, f => ISBNGenerator);
 
-                var booksToCreate = 100; 
-                var books = new List<Book>();
+            var booksToCreate = 100;
+            var books = new List<Book>();
 
-                for (var i = 0; i < booksToCreate; i++) {
-                    books.Add(testBooks.Generate());
-                }
-                context.Books.AddRange(books);
-                context.SaveChanges();
-
-
-        }
+            for (var i = 0; i < booksToCreate; i++) {
+                books.Add(testBooks.Generate());
+            }
+            context.Books.AddRange(books);
+            context.SaveChanges();
         }
     }
+}
