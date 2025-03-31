@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { UserRegistrationResponse } from '../models/user-registration-response';
 import { UserRegistration } from '../models/user-registration';
 import { UserLogin } from '../models/user-login';
@@ -20,6 +20,22 @@ export class AuthService {
   }
 
   public login(login: UserLogin): Observable<UserLoginResponse> {
-    return this.http.post<UserLoginResponse>(this.apiUrl + '/login', login);
+    return this.http.post<UserLoginResponse>(this.apiUrl + '/login', login)
+  }
+
+
+  public setToken(userLogin: UserLoginResponse){
+    localStorage.setItem('accessToken', userLogin.accessToken);
+    localStorage.setItem('refreshToken', userLogin.refreshToken);
+  }
+
+  public logOut() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
+
+  public isLoggedIn() : boolean {
+    const token = localStorage.getItem('accessToken');
+    return token !== null && token !== '';
   }
 }

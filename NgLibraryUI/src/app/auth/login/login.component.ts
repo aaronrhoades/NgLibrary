@@ -3,6 +3,7 @@ import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../auth.service';
 import { UserLoginResponse } from '../../models/user-login-response';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -13,10 +14,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginComponent {
 
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService, private router: Router) { }
     loginForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)])
+        password: new FormControl('', [Validators.required])
     });
 
     onSubmit() {
@@ -28,7 +29,8 @@ export class LoginComponent {
             console.log(login); // Replace with actual login logic, such as sending data to a server
             this.authService.login(login).subscribe({
                 next: (response: UserLoginResponse) => {
-                    
+                    this.authService.setToken(response);
+                    this.router.navigateByUrl('/');
                     console.log('Login successful!', response);
                     // Handle successful login here, such as redirecting to a dashboard or storing the token
                 },
