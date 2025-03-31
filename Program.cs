@@ -26,6 +26,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddIdentityCore<User>()
+  .AddRoles<IdentityRole>()
   .AddEntityFrameworkStores<DataContext>()
   .AddApiEndpoints();
 
@@ -65,5 +66,19 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapIdentityApi<User>();
+
+//Add roles to the database
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[] { "Librarian", "Customer" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role)) {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
 
 app.Run();
