@@ -9,8 +9,8 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-book',
   standalone: true,
   imports: [RouterLink, AsyncPipe],
-  templateUrl: './book.component.html',
-  styleUrl: './book.component.css'
+  templateUrl: './book-details.component.html',
+  styleUrl: './book-details.component.css'
 })
 export class BookDetailsComponent implements OnInit {
   book$!: Observable<Book>;
