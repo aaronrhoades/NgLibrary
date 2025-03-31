@@ -1,9 +1,9 @@
 import { IBaseEntity } from "./base-entity";
 
 export interface IRentable extends IBaseEntity {
-    Title: string;
-    Description: string;
-    CoverImg: string;
-    Available: number;
-    TotalCount: number;
+    title: string;
+    description: string;
+    coverImg: string;
+    available: number;
+    totalCount: number;
 }

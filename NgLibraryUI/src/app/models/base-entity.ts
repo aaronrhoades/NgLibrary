@@ -1,3 +1,3 @@
 export interface IBaseEntity {
-    Id: string; // Guid as string
+    id: string; // Guid as string
 }

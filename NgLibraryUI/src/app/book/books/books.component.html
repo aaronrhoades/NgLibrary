@@ -1,1 +1,3 @@
-<p>books works!</p>
+@for (book of books; track book.id) {
+    <app-book-preview [book]="book"></app-book-preview>
+}

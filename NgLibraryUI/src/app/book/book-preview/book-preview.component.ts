@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
+import { Book } from '../../models/book';
 
 @Component({
   selector: 'app-book-preview',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './book-preview.component.css'
 })
 export class BookPreviewComponent {
-
+  book = input.required<Book>();
 }
