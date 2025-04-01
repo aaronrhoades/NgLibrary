@@ -4,6 +4,8 @@ import { Book } from '../../models/book';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../book.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToastService } from '../../shared/services/toast.service';
+import { ToastType } from '../../models/toast';
 
 @Component({
   selector: 'app-book-edit',
@@ -33,6 +35,7 @@ export class BookEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private bookService: BookService,
+    private toastService: ToastService,
   ){ }
 
   ngOnInit() {
@@ -74,9 +77,8 @@ export class BookEditComponent implements OnInit {
 
       } as Book; // Cast the form value to Book type
       this.bookService.updateBook(updatedBook).subscribe({
-        next: (response) => {
-          //TODO: add toast message
-          console.log('Book updated successfully!', response);
+        next: () => {
+          this.toastService.updateToast({body: "Book updated successfully.", type: ToastType.success, duration: 8000});
           this.router.navigateByUrl(`/book/${this.bookId}`);
         },
         error: (error) => {

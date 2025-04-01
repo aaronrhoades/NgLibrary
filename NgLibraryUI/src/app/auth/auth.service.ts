@@ -29,6 +29,10 @@ export class AuthService {
     localStorage.setItem('refreshToken', userLogin.refreshToken);
   }
 
+  public deleteToken(): void {
+    localStorage.removeItem('accessToken');
+  }
+
   public logOut() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
