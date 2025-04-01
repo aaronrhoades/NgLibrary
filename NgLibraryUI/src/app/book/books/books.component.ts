@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BookService } from '../book.service';
 import { Book } from '../../models/book';
 import { BookPreviewComponent } from '../book-preview/book-preview.component';
+import { of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-books',
@@ -16,7 +17,18 @@ export class BooksComponent {
   constructor(private bookService: BookService) { }
 
   ngOnInit() {
-    this.bookService.getAllBooks().subscribe({
+    this.bookService.getAllBooks().pipe(
+      switchMap(result => {
+        if(result.length === 0) {
+          return this.bookService.populateBooks().pipe(
+            switchMap(() => this.bookService.getAllBooks())
+          );
+        }
+        else{
+          return of(result);
+        }
+      })
+    ).subscribe({
       next: (books) => {
         this.books = books
       },

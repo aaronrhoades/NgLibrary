@@ -23,4 +23,8 @@ export class BookService {
   public updateBook(book: Book): Observable<HttpResponse<Book>> {
     return this.http.put<HttpResponse<Book>>(`${this.apiUrl}/Book/${book.id}`, book);
   }
+
+  public populateBooks() : Observable<any> {
+    return this.http.get(`${this.apiUrl}/createDB`);
+  }
 }
