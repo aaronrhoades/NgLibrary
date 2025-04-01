@@ -30,7 +30,7 @@ namespace NgLibrary
                 .RuleFor(b => b.PublishedDate, f => f.Date.Past(400, DateTime.Today))
                 // Cover image using Picsum
                 .RuleFor(b => b.CoverImg, f => f.Image.PicsumUrl())
-                .RuleFor(b => b.Description, f => f.Name.JobDescriptor())
+                .RuleFor(b => b.Description, f => f.Lorem.Paragraph(2))
                 .RuleFor(b => b.Publisher, f => f.Company.CompanyName())
                 .RuleFor(b => b.Category, f => categories[random.Number(0, categories.Length - 1)])
                 .RuleFor(b => b.PageCount, f => f.Random.Number(1, 100000))
