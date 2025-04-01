@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NgLibrary.Data;
@@ -11,6 +12,7 @@ namespace NgLibrary.Controllers
     [ApiController]
     [EnableCors("Development")]
     [Produces("application/json")]
+    [Authorize]
     public class RentalController : ControllerBase
     {
         private readonly DataContext _context;
