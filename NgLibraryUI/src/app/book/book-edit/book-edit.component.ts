@@ -70,7 +70,7 @@ export class BookEditComponent implements OnInit {
       const updatedBook: Book = {
         id: this.bookId,
         ...this.bookForm.value
-        , publishedDate: new Date(),//this.bookForm.value.publishedDate),
+        , publishedDate: new Date(this.bookForm.value.publishedDate!),
 
       } as Book; // Cast the form value to Book type
       this.bookService.updateBook(updatedBook).subscribe({
