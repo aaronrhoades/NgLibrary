@@ -29,11 +29,23 @@ namespace NgLibrary.Controllers
             return Ok(rentals);
         }
 
-        // GET: RentalController/5
+        // GET: RentalController/5/5
         [HttpGet("{userId}/{bookId}")]
         public async Task<ActionResult<Rental>> GetRentalByIds(string userId, string bookId)
         {
             var rental = await _context.Rentals.Where(r => (r.UserId == userId && r.BookId == bookId)).SingleOrDefaultAsync();
+            if (rental == null)
+            {
+                return NotFound();
+            }
+            return Ok(rental);
+        }
+
+        // GET: RentalController/5
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<Rental>> GetRentalsByUserId(string userId)
+        {
+            var rental = await _context.Rentals.Where(r => (r.UserId == userId)).ToListAsync();
             if (rental == null)
             {
                 return NotFound();
