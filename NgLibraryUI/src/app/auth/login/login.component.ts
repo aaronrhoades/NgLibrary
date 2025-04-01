@@ -6,6 +6,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastService } from '../../shared/services/toast.service';
 import { ToastType } from '../../models/toast';
+import { switchMap } from 'rxjs';
+import { User } from '../../models/user';
 
 @Component({
     selector: 'app-login',
@@ -32,9 +34,14 @@ export class LoginComponent {
             password: this.loginForm.value.password!
         }
         if (this.loginForm.valid) {
-            this.authService.login(login).subscribe({
-                next: (response: UserLoginResponse) => {
+            this.authService.login(login).pipe(
+                switchMap((response: UserLoginResponse) => {
                     this.authService.setToken(response);
+                    return this.authService.getCurrentUser();
+                },)
+            ).subscribe({
+                next: (response: User) => {
+                    this.authService.setUser(response);
                     this.router.navigateByUrl('/');
                 },
                 error: (error: HttpErrorResponse) => {

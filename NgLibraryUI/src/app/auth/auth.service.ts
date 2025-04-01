@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserRegistrationResponse } from '../models/user-registration-response';
 import { UserRegistration } from '../models/user-registration';
 import { UserLogin } from '../models/user-login';
 import { UserLoginResponse } from '../models/user-login-response';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,15 @@ export class AuthService {
     return this.http.post<UserLoginResponse>(this.apiUrl + '/login', login)
   }
 
+  public getCurrentUser(): Observable<User> {
+      return this.http.get<User>(`${this.apiUrl}/Identity/get-current-user`);
+  }
 
-  public setToken(userLogin: UserLoginResponse){
+  public setUser(user: User) {
+    localStorage.setItem('userId', user.id)
+  }
+
+  public setToken(userLogin: UserLoginResponse) {
     localStorage.setItem('accessToken', userLogin.accessToken);
     localStorage.setItem('refreshToken', userLogin.refreshToken);
   }
@@ -36,10 +44,12 @@ export class AuthService {
   public logOut() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userId');
   }
 
   public isLoggedIn() : boolean {
     const token = localStorage.getItem('accessToken');
     return token !== null && token !== '';
   }
+
 }
