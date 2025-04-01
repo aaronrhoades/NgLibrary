@@ -27,7 +27,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               authService.deleteToken();
               toastService.updateToast({
                 body:'You have been logged out. Please log in again to continue.',
-                type: ToastType.error,
+                type: ToastType.danger,
                 duration: 8000
               });
               router.navigateByUrl('/login');
@@ -35,7 +35,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             else if (err.status === 403) {
               toastService.updateToast({
                 body:'You are not authorized to perform this action.',
-                type: ToastType.error,
+                type: ToastType.danger,
                 duration: 8000
               });
             }

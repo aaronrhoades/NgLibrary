@@ -41,7 +41,7 @@ export class LoginComponent {
                     console.error('Login failed!', error);
                     this.toastService.updateToast({
                         body: 'Login failed! Please try again.', 
-                        type: ToastType.error,
+                        type: ToastType.danger,
                         duration: 8000
                     })
                 }

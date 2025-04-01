@@ -1,5 +1,6 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { Toast } from '../../models/toast';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class ToastService {
   }
 
   updateToast(newToast: Toast) {
+    newToast.id = uuidv4();
     this.toasts.update(toasts => {
       toasts.push(newToast);
       return toasts;
@@ -23,6 +25,6 @@ export class ToastService {
   }
 
   removeToast(toast:Toast) {
-    this.toasts.update(value => value.filter(t => t.body !== toast.body));
+    this.toasts.update(value => value.filter(t => t.id !== toast.id));
   }
 }

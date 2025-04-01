@@ -1,4 +1,5 @@
 export class Toast {
+    id?: string = '';
     header?: string | null = null;
     body: string = '';
     type?: ToastType = ToastType.info;
@@ -13,7 +14,6 @@ export class Toast {
 }
 export enum ToastType {
     success = 'success',
-    error = 'error',
+    danger = 'danger',
     info = 'info',
-    warning = 'warning',   
 }
