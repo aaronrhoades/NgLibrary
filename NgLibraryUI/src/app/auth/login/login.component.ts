@@ -4,6 +4,8 @@ import { AuthService } from '../auth.service';
 import { UserLoginResponse } from '../../models/user-login-response';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastService } from '../../shared/services/toast.service';
+import { ToastType } from '../../models/toast';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +16,11 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
 
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+        private toastService: ToastService,
+    ) { }
     loginForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required])
@@ -26,17 +32,18 @@ export class LoginComponent {
             password: this.loginForm.value.password!
         }
         if (this.loginForm.valid) {
-            console.log(login); // Replace with actual login logic, such as sending data to a server
             this.authService.login(login).subscribe({
                 next: (response: UserLoginResponse) => {
                     this.authService.setToken(response);
                     this.router.navigateByUrl('/');
-                    console.log('Login successful!', response);
-                    // Handle successful login here, such as redirecting to a dashboard or storing the token
                 },
                 error: (error: HttpErrorResponse) => {
                     console.error('Login failed!', error);
-                    // Handle login error here, such as displaying an error message to the user
+                    this.toastService.updateToast({
+                        body: 'Login failed! Please try again.', 
+                        type: ToastType.error,
+                        duration: 8000
+                    })
                 }
             });
         } else {
