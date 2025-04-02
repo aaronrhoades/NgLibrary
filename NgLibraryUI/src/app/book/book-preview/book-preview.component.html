@@ -1,22 +1,29 @@
-<div class="my-4 p-3 shadow-sm d-flex ">
-    <div>
-        <img [src]="book().coverImg" alt="{{book().title}} cover" style="max-width: 100px; max-height: 150px;"/><br/>
-        <h3>
-            {{book().title}}<br/>
-        </h3>
-        <small>
-            by {{book().author}}
-        </small>
+<div class="my-4 p-3 shadow-sm d-flex justify-content-between border border-dark">
+    <div class="d-flex justify-content-start">
+        <div class="first-col">
+            <a [routerLink]="['/book', book().id]">
+                <img [src]="book().coverImg" alt="{{book().title}} cover" style="max-width: 100px; max-height: 150px;"/><br/>
+            </a>
+            <h3>
+                {{book().title}}<br/>
+            </h3>
+            <small>
+                by {{book().author}}
+            </small>
+        </div>
+        <div class="px-4">
+            {{book().description}}<br/>
+        </div>
     </div>
     <div>
-        {{book().description}}<br/>
-    </div>
-    <div>
-        @if(book().available > 0) {
-            <button class="btn btn-primary" (click)="addToRentalCart(book())">Add to Cart</button>
-        } @else {
-            <p class="text-danger">Not Available</p>
-        }
-        <a [routerLink]="['/book', book().id]">View Book</a><br/>
+        <div class="my-2">
+
+            @if(book().available > 0) {
+                <button class="btn btn-primary" (click)="addToRentalCart(book())">Add&nbsp;to&nbsp;Cart</button>
+            } @else {
+                <p class="text-danger">Not Available</p>
+            }
+        </div>
+        <a [routerLink]="['/book', book().id]">View Details</a><br/>
     </div>
 </div>
