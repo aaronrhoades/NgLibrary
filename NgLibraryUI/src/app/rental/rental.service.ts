@@ -22,7 +22,7 @@ export class RentalService {
 
   public addToRentalCart(book: Book) {
     if(this.rentalCart().findIndex(b => b.id === book.id) > -1) {
-      this.toastService.updateToast({body: 'Already added to cart', type: ToastType.danger, duration: 8000});
+      this.toastService.updateToast({body: 'Already in cart', type: ToastType.danger, duration: 8000});
     } else {
       this.rentalCart.update(books => {
         books.push(book);

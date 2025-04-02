@@ -3,14 +3,14 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { Book } from '../../models/book';
 import { BookService } from '../book.service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { RentalService } from '../../rental/rental.service';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [RouterLink, AsyncPipe],
+  imports: [RouterLink, AsyncPipe, DatePipe],
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.css'
 })

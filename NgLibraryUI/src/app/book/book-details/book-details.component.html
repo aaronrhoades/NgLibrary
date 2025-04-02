@@ -1,15 +1,43 @@
+<p><a [routerLink]="['/books']">&laquo; Back to all books</a></p>
 @if(book$ | async; as book) {
-
-    <h2>{{book.title}} by {{book.author}}</h2>
+    
+    <h2>{{book.title}}</h2>
     @if(userRole() === 'Librarian') {
-        <a [routerLink]="['/book/edit', book.id]">Edit</a><br/>
+        <div class="mb-5">
+
+            <a [routerLink]="['/book/edit', book.id]">Edit</a><br/>
+        </div>
     }
+    
+    
     <img [src]="book.coverImg" alt="{{book.title}} cover" style="max-width: 200px; max-height: 300px;"/><br/>
-    <p>{{book.description}}</p>
-    <!-- <p>Published on: {{book.publishedDate | date}}</p> -->
-    <p>ISBN: {{book.isbn}}</p>
-    <!-- <p>Pages: {{book.pages}}</p> -->
-    <p>Publisher: {{book.publisher}}</p>
-    <button class="btn btn-primary" (click)="addToCart(book)">Add to Cart</button>
-    <p><a [routerLink]="['/books']">Back to all books</a></p>
+    <div class="my-3">
+        <b>Author:</b> {{book.author}}
+    </div>
+    <div class="my-3">
+        <b>ISBN:</b> {{book.isbn}}
+    </div>
+    <div class="my-3">
+        <b>Publisher:</b> {{book.publisher}}
+    </div>
+    <div class="my-3">
+        <b>Published Date:</b> {{book.publishedDate | date}}
+    </div>
+    <div class="my-3">
+        <b>Pages: </b> {{book.pageCount}}
+    </div>
+    <div class="my-3">
+        <b>Category:</b> {{book.category}}
+    </div>
+    <div class="my-3">
+        <b>Description:</b><br/>
+        {{book.description}}
+    </div>
+    @if(userRole() === 'Customer') {
+        @if(book.available > 0) {
+            <button class="btn btn-primary" (click)="addToCart(book)">Add to Cart</button>
+        } @else {
+            <p class="text-danger">Not Available</p>
+        }
+    }
 }

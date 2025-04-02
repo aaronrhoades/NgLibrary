@@ -16,14 +16,15 @@
         </div>
     </div>
     <div>
-        <div class="my-2">
-
-            @if(book().available > 0) {
-                <button class="btn btn-primary" (click)="addToRentalCart(book())">Add&nbsp;to&nbsp;Cart</button>
-            } @else {
-                <p class="text-danger">Not Available</p>
+        <div class="my-2 d-flex align-items-center">
+            @if(userRole() === 'Customer') {
+                @if(book().available > 0) {
+                    <button class="btn btn-primary" (click)="addToRentalCart(book())">Add&nbsp;to&nbsp;Cart</button>
+                } @else {
+                    <p class="text-danger">Not&nbsp;Available</p>
+                }
             }
         </div>
-        <a [routerLink]="['/book', book().id]">View Details</a><br/>
+        <a [routerLink]="['/book', book().id]">View&nbsp;Details</a>
     </div>
 </div>

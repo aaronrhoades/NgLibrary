@@ -1,7 +1,8 @@
-import { Component, effect, input } from '@angular/core';
+import { Component, effect, inject, input } from '@angular/core';
 import { Book } from '../../models/book';
 import { RouterLink } from '@angular/router';
 import { RentalService } from '../../rental/rental.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-book-preview',
@@ -12,6 +13,8 @@ import { RentalService } from '../../rental/rental.service';
 })
 export class BookPreviewComponent {
   book = input.required<Book>();
+  authService = inject(AuthService);
+  userRole = this.authService.getUserRoleSignal();
   constructor(
     private rentalService: RentalService,
   ){}

@@ -1,4 +1,5 @@
 ﻿
+using System.Globalization;
 using Bogus;
 using NgLibrary.Data;
 using NgLibrary.Models;
@@ -13,6 +14,7 @@ namespace NgLibrary
             var random = new Randomizer();
 
             var categories = new[] { "Action", "Adventure", "Comedy", "Romance", "Fiction", "Non-Fiction" };
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
             var testBooks = new Faker<Book>()
                 //Ensure all properties have rules. By default, StrictMode is false
@@ -22,7 +24,7 @@ namespace NgLibrary
                 //Author Name
                 .RuleFor(b => b.Author, f => f.Name.FirstName() + ' ' + f.Name.LastName())
                 //A few words for a title
-                .RuleFor(b => b.Title, f => f.Lorem.Word() + ' ' + f.Hacker.Noun())
+                .RuleFor(b => b.Title, f => textInfo.ToTitleCase(f.Lorem.Word() + ' ' + f.Hacker.Noun()))
                 // Total and available start as 1
                 .RuleFor(b => b.TotalCount, f => 1)
                 .RuleFor(b => b.Available, f => 1)
