@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastComponent } from "./shared/components/toast/toast.component";
 import { RentalToolbarComponent } from "./rental/rental-toolbar/rental-toolbar.component";
+import { HeaderComponent } from './layout/header/header.component';
 
 @Component({
     selector: 'app-root',
@@ -12,6 +13,7 @@ import { RentalToolbarComponent } from "./rental/rental-toolbar/rental-toolbar.c
       RouterOutlet,
       ToastComponent, 
       RentalToolbarComponent,
+      HeaderComponent
     ]
 })
 

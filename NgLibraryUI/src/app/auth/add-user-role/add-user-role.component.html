@@ -1,0 +1,10 @@
+<p>add-user-role works!</p>
+<h1>Please select your role</h1>
+<div class="form-group">
+    <label for="role">Role</label>
+        <select [formControl]="roleControl" class="form-select">
+            <option value="Customer">Customer</option>
+            <option value="Librarian">Librarian</option>
+    </select>
+</div>
+<button class="btn btn-primary" (click)="addRole()">Add Role</button>

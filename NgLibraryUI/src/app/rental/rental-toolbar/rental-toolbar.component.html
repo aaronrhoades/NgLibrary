@@ -1,7 +1,7 @@
 @if(rentals().length) {
-    <div class="d-flex mb-4 p-3 flex-row-reverse shadow">
+    <div class="d-flex mb-4 p-3 flex-row-reverse align-items-center shadow">
         <a [routerLink]="['rentals/cart']">View Cart</a>
-        <p class="mx-4">You have {{rentals().length}} {{rentals().length | i18nPlural: messageMapping}} in your cart.</p>
+        <div class="mx-4">You have {{rentals().length}} {{rentals().length | i18nPlural: messageMapping}} in your cart.</div>
     </div>
 } 
     

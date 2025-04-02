@@ -17,7 +17,6 @@ export class RentalService {
   
   constructor(
     private http: HttpClient,
-    private authService: AuthService,
     private toastService: ToastService,
   ) { }
 
@@ -46,7 +45,7 @@ export class RentalService {
   }
 
   public checkout(): Observable<HttpResponse<Rental[]>> {
-    const userId = this.authService.getUserIdFromToken();
+    const userId = localStorage.getItem('userId');
     const rentals: Rental[] = this.rentalCart().map(book => {
       let rental = new Rental();
       rental.userId = userId!;
