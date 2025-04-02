@@ -4,6 +4,7 @@ import { Observable, switchMap } from 'rxjs';
 import { Book } from '../../models/book';
 import { BookService } from '../book.service';
 import { AsyncPipe } from '@angular/common';
+import { RentalService } from '../../rental/rental.service';
 
 @Component({
   selector: 'app-book',
@@ -15,7 +16,11 @@ import { AsyncPipe } from '@angular/common';
 export class BookDetailsComponent implements OnInit {
   book$!: Observable<Book>;
 
-  constructor(private route: ActivatedRoute, private bookService: BookService){ }
+  constructor(
+    private route: ActivatedRoute,
+    private bookService: BookService,
+    private rentalService: RentalService,
+  ){ }
 
   ngOnInit() {
     this.book$ = this.route.paramMap.pipe(
@@ -24,5 +29,9 @@ export class BookDetailsComponent implements OnInit {
         return this.bookService.getBookById(id);
       })
     )
+  }
+
+  addToCart(book: Book) {
+    this.rentalService.addToRentalCart(book);
   }
 }
