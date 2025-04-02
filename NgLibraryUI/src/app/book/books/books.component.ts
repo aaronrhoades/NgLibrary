@@ -17,18 +17,7 @@ export class BooksComponent {
   constructor(private bookService: BookService) { }
 
   ngOnInit() {
-    this.bookService.getAllBooks().pipe(
-      switchMap(result => {
-        if(result.length === 0) {
-          return this.bookService.populateBooks().pipe(
-            switchMap(() => this.bookService.getAllBooks())
-          );
-        }
-        else{
-          return of(result);
-        }
-      })
-    ).subscribe({
+    this.bookService.getAllBooks().subscribe({
       next: (books) => {
         this.books = books
       },

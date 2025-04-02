@@ -5,6 +5,7 @@ import { Book } from '../models/book';
 import { FeaturedBookComponent } from '../book/featured-book/featured-book.component';
 import { AuthService } from '../auth/auth.service';
 import { RouterLink } from '@angular/router';
+import { of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +21,19 @@ export class DashboardComponent implements OnInit{
   featuredBooks: Book[] = [];
 
   ngOnInit(): void {
-    this.bookService.getFeaturedBooks().subscribe(
+    this.bookService.getFeaturedBooks().pipe(
+      switchMap(result => {
+        if(result.length === 0) {
+          //seed DB if no books are present
+          return this.bookService.populateBooks().pipe(
+            switchMap(() => this.bookService.getFeaturedBooks())
+          );
+        }
+        else{
+          return of(result);
+        }
+      })
+    ).subscribe(
       {
         next: books => {
           this.featuredBooks = books;
