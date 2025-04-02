@@ -6,16 +6,22 @@ import { Book } from '../../models/book';
 import { ToastType } from '../../models/toast';
 import { ToastService } from '../../shared/services/toast.service';
 import { BookService } from '../book.service';
+import { Modal } from '../../models/modal';
+import { ModalComponent } from '../../shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-book-edit',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, ModalComponent],
   templateUrl: './book-edit.component.html',
   styleUrl: './book-edit.component.css'
 })
 export class BookEditComponent implements OnInit {
   book: Book = new Book();
+  modalSubmitAction: () => void | null = this.cancelBookEdit;
+  modal: Modal = new Modal();
+  showModal: boolean = false;
+
   bookForm = new FormGroup({
         id: new FormControl({ value: '', disabled: true }),
         description: new FormControl(''),
@@ -91,13 +97,37 @@ export class BookEditComponent implements OnInit {
       console.error('bookForm is invalid!', this.bookForm.errors);
     }
   }
+  modalSubmit(userChoice: boolean){
+    if(userChoice){
+      this.modalSubmitAction();
+    } else {
+      this.showModal = false;
+    }
+  }
 
   cancelBookEdit() {
-    //TODO: "Are you sure?" (if ngdirty)
     this.router.navigateByUrl(`/book/${this.book.id}`);
   }
 
-  deleteBook() {
+  cancelBookEditMessage() {
+    if(this.bookForm.dirty) {
+      this.modal.title = "Cancel Editing";
+      this.modal.body = "You have unsaved changes. Are you sure you want to cancel?";
+      this.modalSubmitAction = this.cancelBookEdit;
+      this.showModal = true;
+    } else {
+      this.cancelBookEdit();
+    }
+  }
+
+  deleteBookMessage() {
+    this.modal.title = "Delete Book";
+    this.modal.body = `Are you sure you want to delete book ${this.book.title}?`;
+    this.modalSubmitAction = this.deleteBook;
+    this.showModal = true;
+  }
+
+  deleteBook() : void {   
     this.bookService.deleteBook(this.book.id).subscribe({
       next: () => {
         this.toastService.updateToast({body: 'Book has been deleted successfully.', type: ToastType.success, duration: 8000});

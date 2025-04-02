@@ -13,7 +13,7 @@ import { HeaderComponent } from './layout/header/header.component';
       RouterOutlet,
       ToastComponent, 
       RentalToolbarComponent,
-      HeaderComponent
+      HeaderComponent,
     ]
 })
 
