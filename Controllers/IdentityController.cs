@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NgLibrary.Data;
 using NgLibrary.Models;
 using NgLibrary.Models.Dto;
 
@@ -15,10 +16,29 @@ namespace NgLibrary.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public IdentityController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly DataContext _context;
+        public IdentityController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, DataContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
+        }
+
+        [HttpPost("add-role-to-user")]
+        public async Task<ActionResult> addRoleToUser(addIdentityRoleToUserDto userIdAndRoleName)
+        {
+            var userFromId = await _userManager.FindByIdAsync(userIdAndRoleName.UserId);
+            var roleFromName = await _roleManager.FindByNameAsync(userIdAndRoleName.RoleName);
+            if (userFromId is not null && roleFromName is not null)
+            {
+                await _userManager.AddToRoleAsync(userFromId, userIdAndRoleName.RoleName);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("get-current-user")]

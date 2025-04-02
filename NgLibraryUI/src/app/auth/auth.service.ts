@@ -28,6 +28,11 @@ export class AuthService {
       return this.http.get<User>(`${this.apiUrl}/Identity/get-current-user`);
   }
 
+  public addUserToRole(userId: string, role: string) {
+    const obj = {userId: userId, rollName: role}
+    this.http.post(`${this.apiUrl}/Identity/add-role-to-user`, obj);
+  }
+  
   public setUser(user: User) {
     localStorage.setItem('userId', user.id)
   }
