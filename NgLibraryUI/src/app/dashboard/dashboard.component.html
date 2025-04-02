@@ -1,2 +1,14 @@
-<p>dashboard works!</p>
-<app-books></app-books>
+<h2>Featured Books</h2>
+<div class="row">
+    @for(book of featuredBooks; track book.id) {
+        <div class="col-md-4">
+            <app-featured-book [book]="book"></app-featured-book>
+        </div>
+    }
+</div>
+<h2>Actions</h2>
+@if(userRole() === 'Customer') {
+    <a routerLink="/books" class="btn btn-primary">View All Books</a>
+} @else if (userRole() === 'Librarian') {
+    <a routerLink="/books" class="btn btn-primary">View All Books</a>
+}

@@ -8,6 +8,11 @@
         <li><a routerLink="/books" class="nav-link px-2" routerLinkActive="link-secondary">Books</a></li>
         <li><a routerLink="/rentals" class="nav-link px-2" routerLinkActive="link-secondary">My Rentals</a></li>
       </ul>
+    } @else if(!!userRole() && userRole() === 'Librarian') {
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a routerLink="/" class="nav-link px-2" routerLinkActive="link-secondary" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
+        <li><a routerLink="/books" class="nav-link px-2" routerLinkActive="link-secondary">Books</a></li>
+      </ul>
     }
     <div class="col-md-3 text-end">
       @if(!!userRole()){

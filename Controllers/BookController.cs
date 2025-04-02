@@ -28,6 +28,14 @@ namespace NgLibrary.Controllers
 
             return Ok(books);
         }
+        [HttpGet("featured")]
+        public async Task<ActionResult<List<Book>>> GetFeaturedBooks() {
+            var books = await _context.Books.ToListAsync();
+            //TODO: real randomize
+            var featuredBooks = books.OrderBy(b => b.Id).Take(3);
+            
+            return Ok(featuredBooks);
+        }
 
         // GET: BookController/5
         [HttpGet("{id}")]
