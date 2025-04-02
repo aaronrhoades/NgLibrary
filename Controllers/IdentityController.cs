@@ -64,5 +64,21 @@ namespace NgLibrary.Controllers
 
             return NotFound();
         }
+        [HttpGet("get-current-user-roles")]
+        [Authorize]
+        public async Task<IActionResult> GetCurrentUserRoles()
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user is not null)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                
+
+                return Ok(roles);
+            }
+
+            return NotFound();
+        }
     }
 }
