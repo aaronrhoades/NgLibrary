@@ -1,0 +1,12 @@
+
+<a [routerLink]="['/']">Back to dashboard</a>
+@for(rental of rentals(); track rental.id) {
+    <div>
+        {{rental.id}}
+    </div>
+    <div>
+        {{rental.title}}
+    </div>
+    <div><a href="#" (click)="remove($event, rental)">Remove</a></div>
+}
+<button class="btn btn-primary" (click)="checkout()">Checkout</button>

@@ -32,6 +32,10 @@ export class AuthService {
     localStorage.setItem('userId', user.id)
   }
 
+  public getUserIdFromToken() : string | null {
+    return localStorage.getItem('userId');
+  }
+
   public setToken(userLogin: UserLoginResponse) {
     localStorage.setItem('accessToken', userLogin.accessToken);
     localStorage.setItem('refreshToken', userLogin.refreshToken);

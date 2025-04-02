@@ -55,18 +55,26 @@ namespace NgLibrary.Controllers
 
         // POST: RentalController
         [HttpPost]
-        public async Task<ActionResult<Rental>> CreateRental(addRentalDto addRentalDto) {
-            var rental = new Rental();
-            
-            rental.UserId = addRentalDto.UserId;
-            rental.BookId = addRentalDto.BookId;
-            rental.DueDate = addRentalDto.DueDate;
-            rental.Renewals = addRentalDto.Renewals;
+        public async Task<ActionResult<Rental>> CreateRentals(addRentalDto[] addRentalDtos) {
+            List<Rental> rentals = [];
+            foreach (var addRentalDto in addRentalDtos)
+            {
+                var rental = new Rental();
+                rental.UserId = addRentalDto.UserId;
+                rental.BookId = addRentalDto.BookId;
+                rental.DueDate = DateTime.Now.AddDays(5);
+                rental.Renewals = 3;
 
-            _context.Rentals.Add(rental);
+                rentals.Add(rental);
+
+                var book = await _context.Books.SingleAsync<Book>(b => b.Id == addRentalDto.BookId);
+                book.Available = book.Available - 1;
+
+            }
+            _context.Rentals.AddRange(rentals);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(CreateRental), new { userId = rental.UserId, bookId = rental.BookId }, rental);
+            return CreatedAtAction(nameof(CreateRentals), rentals);
         }
 
         // PUT: RentalController/5
