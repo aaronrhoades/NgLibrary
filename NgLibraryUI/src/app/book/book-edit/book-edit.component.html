@@ -1,3 +1,8 @@
+<div class="d-flex justify-content-end">
+    <div>
+        <button class="btn btn-danger" (click)="deleteBook()">Delete</button>
+    </div>
+</div>
 <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <label for="id">ID</label>

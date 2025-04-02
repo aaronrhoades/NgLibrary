@@ -27,4 +27,8 @@ export class BookService {
   public populateBooks() : Observable<any> {
     return this.http.get(`${this.apiUrl}/createDB`);
   }
+
+  public deleteBook(bookId: string){
+    return this.http.delete(`${this.apiUrl}/book/${bookId}`);
+  }
 }

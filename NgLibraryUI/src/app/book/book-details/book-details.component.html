@@ -1,7 +1,9 @@
 @if(book$ | async; as book) {
 
     <h2>{{book.title}} by {{book.author}}</h2>
-    <a [routerLink]="['/book/edit', book.id]">Edit</a><br/>
+    @if(userRole() === 'Librarian') {
+        <a [routerLink]="['/book/edit', book.id]">Edit</a><br/>
+    }
     <img [src]="book.coverImg" alt="{{book.title}} cover" style="max-width: 200px; max-height: 300px;"/><br/>
     <p>{{book.description}}</p>
     <!-- <p>Published on: {{book.publishedDate | date}}</p> -->

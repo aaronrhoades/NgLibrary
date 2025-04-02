@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, publish, switchMap } from 'rxjs';
-import { Book } from '../../models/book';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BookService } from '../book.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ToastService } from '../../shared/services/toast.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap } from 'rxjs';
+import { Book } from '../../models/book';
 import { ToastType } from '../../models/toast';
+import { ToastService } from '../../shared/services/toast.service';
+import { BookService } from '../book.service';
 
 @Component({
   selector: 'app-book-edit',
@@ -15,7 +15,7 @@ import { ToastType } from '../../models/toast';
   styleUrl: './book-edit.component.css'
 })
 export class BookEditComponent implements OnInit {
-  bookId: string = '';
+  book: Book = new Book();
   bookForm = new FormGroup({
         id: new FormControl({ value: '', disabled: true }),
         description: new FormControl(''),
@@ -41,10 +41,11 @@ export class BookEditComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap(params => {
-        this.bookId = String(params.get('id'));
-        return this.bookService.getBookById(this.bookId);
+        const bookId = String(params.get('id'));
+        return this.bookService.getBookById(bookId);
       })
     ).subscribe(book => {
+      this.book = book;
       const publishedDate = new Date(book.publishedDate);
       //since toISOString adjusts timezone, prevent off by 1 day due to conversion of time zone
       const offset = publishedDate.getTimezoneOffset(); 
@@ -71,7 +72,7 @@ export class BookEditComponent implements OnInit {
     
     if (this.bookForm.valid) {
       const updatedBook: Book = {
-        id: this.bookId,
+        id: this.book.id,
         ...this.bookForm.value
         , publishedDate: new Date(this.bookForm.value.publishedDate!),
 
@@ -79,7 +80,7 @@ export class BookEditComponent implements OnInit {
       this.bookService.updateBook(updatedBook).subscribe({
         next: () => {
           this.toastService.updateToast({body: "Book updated successfully.", type: ToastType.success, duration: 8000});
-          this.router.navigateByUrl(`/book/${this.bookId}`);
+          this.router.navigateByUrl(`/book/${this.book.id}`);
         },
         error: (error) => {
           // TODO: Handle update error here, such as displaying an error message to the user
@@ -93,6 +94,15 @@ export class BookEditComponent implements OnInit {
 
   cancelBookEdit() {
     //TODO: "Are you sure?" (if ngdirty)
-    this.router.navigateByUrl(`/book/${this.bookId}`);
+    this.router.navigateByUrl(`/book/${this.book.id}`);
+  }
+
+  deleteBook() {
+    this.bookService.deleteBook(this.book.id).subscribe({
+      next: () => {
+        this.toastService.updateToast({body: 'Book has been deleted successfully.', type: ToastType.success, duration: 8000});
+        this.router.navigateByUrl('/books');
+      }
+    });
   }
 }
