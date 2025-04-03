@@ -69,10 +69,7 @@ export class AuthService {
   }
 
   public logOut() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('role');
+    localStorage.clear();
     this.rentalService.clearRentalCart();
     this.userRole.set(null);
     this.router.navigateByUrl('/login');

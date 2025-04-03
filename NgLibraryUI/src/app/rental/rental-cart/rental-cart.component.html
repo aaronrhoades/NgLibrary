@@ -1,12 +1,27 @@
 
-<a [routerLink]="['/']">Back to dashboard</a>
-@for(rental of rentals(); track rental.id) {
-    <div>
-        {{rental.id}}
-    </div>
-    <div>
-        {{rental.title}}
-    </div>
-    <div><a href="#" (click)="remove($event, rental)">Remove</a></div>
-}
-<button class="btn btn-primary" (click)="checkout()">Checkout</button>
+<a [routerLink]="['/']">&laquo; Back to dashboard</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Category</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(rental of rentals(); track rental.id) {
+            <tr>
+                <td>{{rental.title}}</td>
+                <td>{{rental.author}}</td>
+                <td>{{rental.category}}</td>
+                <td><button class="btn btn-danger" (click)="remove($event, rental)">Remove</button></td>
+            </tr>
+        }
+        
+    </tbody>
+</table>
+<div class="my-5 d-flex justify-content-end">
+    <button class="btn btn-success" (click)="checkout()">Checkout</button>
+</div>

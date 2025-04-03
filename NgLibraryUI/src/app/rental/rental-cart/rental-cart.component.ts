@@ -18,10 +18,9 @@ export class RentalCartComponent {
 
   checkout() {
     this.rentalService.checkout().subscribe({
-      next: (response) => {
+      next: () => {
         this.rentalService.clearRentalCart();
-        this.router.navigateByUrl('/');
-        console.log(response);
+        this.router.navigateByUrl('/rentals');
       }
     });
   }
