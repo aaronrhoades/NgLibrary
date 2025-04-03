@@ -30,7 +30,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                 type: ToastType.danger,
                 duration: 8000
               });
-              router.navigateByUrl('/login');
+              authService.logOut();
             }
             else if (err.status === 403) {
               toastService.updateToast({

@@ -1,4 +1,4 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Book } from '../../models/book';
 import { RouterLink } from '@angular/router';
 import { RentalService } from '../../rental/rental.service';
@@ -18,6 +18,7 @@ export class BookPreviewComponent {
   constructor(
     private rentalService: RentalService,
   ){}
+
   addToRentalCart(book: Book) {
     this.rentalService.addToRentalCart(book);
   }
