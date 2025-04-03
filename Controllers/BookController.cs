@@ -28,6 +28,15 @@ namespace NgLibrary.Controllers
 
             return Ok(books);
         }
+
+        [HttpPost("by-ids")]
+        public async Task<ActionResult<List<Book>>> GetBooksByIds(string[] ids)
+        {
+            var booksByIds = await _context.Books.Where(b => ids.Contains(b.Id)).ToListAsync();
+
+            return Ok(booksByIds);
+        }
+
         [HttpGet("featured")]
         public async Task<ActionResult<List<Book>>> GetFeaturedBooks() {
             var books = await _context.Books.ToListAsync();

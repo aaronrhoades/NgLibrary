@@ -55,4 +55,8 @@ export class RentalService {
     });
     return this.http.post<HttpResponse<Rental[]>>(this.apiUrl+'/Rental',rentals);
   }
+
+  public getRentalsByUserId(userId: string): Observable<Rental[]> {
+    return this.http.get<Rental[]>(this.apiUrl+'/Rental/' + userId);
+  }
 }

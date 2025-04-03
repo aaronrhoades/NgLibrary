@@ -1,1 +1,25 @@
-<p>rental works!</p>
+<h1 class="my-5">My Rentals</h1>
+@if(rentalBooks.length){
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(rental of rentalBooks; track rental.bookId + rental.userId) {
+                <tr>
+                    <td>{{rental.title}}</td>
+                    <td>{{rental.author}}</td>
+                    <td>{{rental.dueDate | date}}</td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+} @else {
+    <p>No rentals found. Head over to the <a routerLink="/books">books</a> page to find some rentals!</p>
+}
