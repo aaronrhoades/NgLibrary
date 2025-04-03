@@ -10,8 +10,8 @@ namespace NgLibrary.Extensions
 
       using DataContext context = scope.ServiceProvider.GetRequiredService<DataContext>();
 
-      context.Database.EnsureCreated();
       context.Database.Migrate();
+      context.Database.EnsureCreated();
     }
   }
 }
