@@ -25,6 +25,7 @@ namespace NgLibrary.Controllers
         }
 
         [HttpPost("add-role-to-user")]
+        [Authorize]
         public async Task<ActionResult> addRoleToUser(addIdentityRoleToUserDto userIdAndRoleName)
         {
             var userFromId = await _userManager.FindByIdAsync(userIdAndRoleName.UserId);

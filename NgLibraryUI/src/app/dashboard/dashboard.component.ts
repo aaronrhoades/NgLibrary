@@ -1,16 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BooksComponent } from '../book/books/books.component';
 import { BookService } from '../book/book.service';
-import { Book } from '../models/book';
 import { FeaturedBookComponent } from '../book/featured-book/featured-book.component';
 import { AuthService } from '../auth/auth.service';
 import { RouterLink } from '@angular/router';
 import { of, switchMap } from 'rxjs';
+import { FeaturedBook } from '../models/featured-book';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [BooksComponent, FeaturedBookComponent, RouterLink],
+  imports: [FeaturedBookComponent, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -18,7 +17,7 @@ export class DashboardComponent implements OnInit{
   bookService = inject(BookService);
   authService = inject(AuthService);
   userRole = this.authService.getUserRoleSignal();
-  featuredBooks: Book[] = [];
+  featuredBooks: FeaturedBook[] = [];
 
   ngOnInit(): void {
     this.bookService.getFeaturedBooks().pipe(

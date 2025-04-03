@@ -1,7 +1,7 @@
 <p><a [routerLink]="['/books']">&laquo; Back to all books</a></p>
 @if(book$ | async; as book) {
     
-    <h2>{{book.title}}</h2>
+    <h1>{{book.title}}</h1>
     @if(userRole() === 'Librarian') {
         <div class="mb-5">
 
@@ -42,7 +42,20 @@
             }
         </div>
         <div class="my-3">
-            <a [routerLink]="['/review/', book.id, userId]" class="btn btn-primary">Add Book Review</a>           
+            <a [routerLink]="['/review/', book.id, userId]" class="btn btn-primary">Add or Edit Book Review</a>
         </div>
     }
+
+    <div class="reviews my-5">
+        <h2>Reviews</h2>
+        @if(reviews.length) {
+
+            @for (review of reviews; track review.bookId + review.userId) {
+                <hr/>
+                <app-review [review]="review"></app-review>
+            }
+        } @else {
+            <p>No reviews yet.</p>
+        }
+    </div>
 }

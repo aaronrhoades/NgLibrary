@@ -38,12 +38,44 @@ namespace NgLibrary.Controllers
         }
 
         [HttpGet("featured")]
-        public async Task<ActionResult<List<Book>>> GetFeaturedBooks() {
+        public async Task<ActionResult<List<getFeaturedBookDto>>> GetFeaturedBooks() {
             var books = await _context.Books.ToListAsync();
             //TODO: real randomize
-            var featuredBooks = books.OrderBy(b => b.Id).Take(3);
-            
-            return Ok(featuredBooks);
+            var featuredBooks = books.OrderBy(b => b.ISBN).Take(3);
+            List<getFeaturedBookDto> featuredBookDtos = new List<getFeaturedBookDto>();
+            foreach (var featuredBook in featuredBooks)
+            {
+                getFeaturedBookDto featuredBookDto = new getFeaturedBookDto();
+                featuredBookDto.Id = featuredBook.Id;
+                featuredBookDto.Description = featuredBook.Description;
+                featuredBookDto.CoverImg = featuredBook.CoverImg;
+                featuredBookDto.Title = featuredBook.Title;
+                featuredBookDto.Author = featuredBook.Author;
+                featuredBookDto.Publisher = featuredBook.Publisher;
+                featuredBookDto.PublishedDate = featuredBook.PublishedDate;
+                featuredBookDto.Category = featuredBook.Category;
+                featuredBookDto.ISBN = featuredBook.ISBN;
+                featuredBookDto.PageCount = featuredBook.PageCount;
+                featuredBookDto.Available = featuredBook.Available;
+                featuredBookDto.TotalCount = featuredBook.TotalCount;
+                
+                var reviews = await _context.Reviews.Where(review => review.BookId == featuredBook.Id).ToListAsync();
+                double totalReviews = 0;
+                if (reviews.Count() > 0)
+                {
+                    foreach (var review in reviews)
+                    {
+                        totalReviews += review.Rating;
+                    }
+                    featuredBookDto.AverageRating = totalReviews / (double)reviews.Count();
+                }
+                else {
+                    featuredBookDto.AverageRating = 0;
+                }
+
+                featuredBookDtos.Add(featuredBookDto);
+            }
+            return Ok(featuredBookDtos);
         }
 
         // GET: BookController/5

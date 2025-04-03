@@ -1,6 +1,11 @@
 <div class="card my-4">
     <img class="card-img-top" [src]="book().coverImg" alt="{{book().title}} cover" /><br/>
     <div class="card-body">
+        @if(book().averageRating > 0){
+            ⭐{{book().averageRating | number:'1.2-2'}}
+        } @else {
+            <small class="text-muted">No reviews yet</small>
+        }
     <h3>
         {{book().title}}
     </h3>

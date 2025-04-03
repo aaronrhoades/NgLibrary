@@ -20,8 +20,8 @@ export class ReviewService {
     return this.http.put(`${this.apiUrl}/Review/${review.bookId}/${review.userId}`, review)
   }
 
-  public getReviewsByBookId(bookId: string) {
-    return this.http.get(`${this.apiUrl}/Review/${bookId}`)
+  public getReviewsByBookId(bookId: string) : Observable<Review[]> {
+    return this.http.get<Review[]>(`${this.apiUrl}/Review/${bookId}`)
   }
 
   public getReviewByIds(bookId: string, userId: string): Observable<Review> {
