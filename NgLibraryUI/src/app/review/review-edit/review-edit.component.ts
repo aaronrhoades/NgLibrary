@@ -74,6 +74,7 @@ export class ReviewEditComponent implements OnInit {
 
   onSubmit() {
     if(!this.reviewForm.invalid) {
+
       if(this.isNew) {
         let review = this.reviewForm.value as Review;
 
@@ -81,6 +82,7 @@ export class ReviewEditComponent implements OnInit {
         review.userId = this.userId!;
 
         this.reviewService.createReview(review).subscribe(
+          result => {
             this.toastService.updateToast({body: 'Your review has been added', type: ToastType.success, duration: 8000});
             this.router.navigateByUrl(`/book/${this.bookId}`);
           }
@@ -97,6 +99,7 @@ export class ReviewEditComponent implements OnInit {
         this.reviewService.updateReview(review).subscribe(
           result => {
             this.toastService.updateToast({ body: 'Your review has been updated', type: ToastType.success, duration: 8000 });
+            this.router.navigateByUrl(`/book/${this.bookId}`);
           }
         );
       }
