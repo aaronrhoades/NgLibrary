@@ -15,6 +15,7 @@ import { take } from 'rxjs';
 export class BooksComponent {
   books: Book[] = [];
   searchTerm: string = '';
+  resultsTerm: string = '';
   showClearButton: boolean = false;
 
   constructor(private bookService: BookService) { }
@@ -39,18 +40,27 @@ export class BooksComponent {
       );
     } else { 
       this.showClearButton = true;
+      this.resultsTerm = searchString;
       this.bookService.searchByTitle(searchString).pipe(take(1)).subscribe(
         books => this.books = books
       );
     }
   }
+  
+  onKeyPress(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.searchBooks();
+    }
+  }
 
   clearResults(event: Event) {
     event.preventDefault();
+    this.showClearButton = false;
     this.searchTerm = '';
+    this.resultsTerm = '';
     this.bookService.getAllBooks().pipe(take(1)).subscribe(
       books => this.books = books
     );
-    this.showClearButton = false;
+    
   }
 }
