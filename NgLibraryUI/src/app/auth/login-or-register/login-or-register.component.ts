@@ -27,6 +27,7 @@ export class LoginOrRegisterComponent implements OnInit {
 
   toggleForm() {
     this.isLogin = !this.isLogin; // Toggle the form type
+    this.showJustRegistered = false; // Reset the registration success message
   }
   handleClickAndToggle(event: Event) {
     event.preventDefault();
