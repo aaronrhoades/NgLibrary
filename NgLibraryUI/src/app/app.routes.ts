@@ -9,6 +9,7 @@ import { RentalsComponent } from './rental/rentals/rentals.component';
 import { RentalCartComponent } from './rental/rental-cart/rental-cart.component';
 import { AddUserRoleComponent } from './auth/add-user-role/add-user-role.component';
 import { ManageRentalsComponent } from './rental/manage-rentals/manage-rentals.component';
+import { ReviewEditComponent } from './review/review-edit/review-edit.component';
 
 
 export const routes: Routes = [
@@ -54,6 +55,11 @@ export const routes: Routes = [
     { 
         path: 'rentals/manage',
         component: ManageRentalsComponent,
+        canActivate: [authGuard],
+    },
+    {
+        path: 'review/:bookId/:userId',
+        component: ReviewEditComponent,
         canActivate: [authGuard],
     },
     { 

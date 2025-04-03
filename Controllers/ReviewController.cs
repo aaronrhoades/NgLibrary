@@ -29,6 +29,18 @@ namespace NgLibrary.Controllers
             return Ok(reviews);
         }
 
+        // GET: ReviewController/5
+        [HttpGet("{bookId}")]
+        public async Task<ActionResult<Review>> GetReviewsByBookId(string bookId)
+        {
+            var review = await _context.Reviews.Where(r => r.BookId == bookId).ToListAsync();
+            if (review == null)
+            {
+                return NotFound();
+            }
+            return Ok(review);
+        }
+
         // GET: ReviewController/5/6
         [HttpGet("{bookId}/{userId}")]
         public async Task<ActionResult<Review>> GetReviewByIds(string bookId, string userId)
@@ -49,8 +61,8 @@ namespace NgLibrary.Controllers
             review.BookId = addReviewDto.BookId;
             review.ReviewText = addReviewDto.ReviewText;
             review.Rating = addReviewDto.Rating;
-            review.DatePosted = addReviewDto.DatePosted;
-            review.LastUpdated = addReviewDto.LastUpdated;
+            review.DatePosted = DateTime.UtcNow;
+            review.LastUpdated = DateTime.UtcNow;
 
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
@@ -66,12 +78,9 @@ namespace NgLibrary.Controllers
             if (review is null) { 
                 return NotFound();
             }
-            review.UserId = updateReviewDto.UserId;
-            review.BookId = updateReviewDto.BookId;
             review.ReviewText = updateReviewDto.ReviewText;
             review.Rating = updateReviewDto.Rating;
-            review.DatePosted = updateReviewDto.DatePosted;
-            review.LastUpdated = updateReviewDto.LastUpdated;
+            review.LastUpdated = DateTime.UtcNow;
 
             _context.Reviews.Update(review);
             await _context.SaveChangesAsync();

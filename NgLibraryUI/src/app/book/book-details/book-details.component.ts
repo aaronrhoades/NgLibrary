@@ -18,7 +18,7 @@ export class BookDetailsComponent implements OnInit {
   book$!: Observable<Book>;
   authService = inject(AuthService);
   userRole = this.authService.getUserRoleSignal();
-  
+  userId: string | null = null;
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
@@ -32,6 +32,7 @@ export class BookDetailsComponent implements OnInit {
         return this.bookService.getBookById(id);
       })
     )
+    this.userId = this.authService.getUserIdFromLocalStorage();
   }
 
   addToCart(book: Book) {
