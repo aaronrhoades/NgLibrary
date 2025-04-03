@@ -29,6 +29,10 @@ export class BookService {
     return this.http.get<Book>(`${this.apiUrl}/Book/${id}`);
   }
 
+  public searchByTitle(searchString: string) : Observable<Book[]> {
+    return this.http.post<Book[]>(`${this.apiUrl}/Book/search-by-title`, {searchString});
+  }
+
   public createBook(book: Book): Observable<Book> {
     return this.http.post<Book>(`${this.apiUrl}/Book/`, book);
   }

@@ -78,6 +78,15 @@ namespace NgLibrary.Controllers
             return Ok(featuredBookDtos);
         }
 
+        // GET: BookController
+        [HttpPost("search-by-title")]
+        public async Task<ActionResult<List<Book>>> SearchBooksByTitle(searchStringDto searchString)
+        {
+            var books = await _context.Books.Where(b => b.Title.ToLower() .Contains(searchString.searchString.ToLower())).ToListAsync();
+
+            return Ok(books);
+        }
+
         // GET: BookController/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBookById(string id)

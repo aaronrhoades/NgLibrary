@@ -1,3 +1,14 @@
+<div class="my-4">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for books by title..." [(ngModel)]="searchTerm">
+        <button class="btn btn-primary" type="button" id="button-addon2" (click)="searchBooks()">
+            Search
+        </button>
+    </div>
+    @if(showClearButton){
+        <a href="#" (click)="clearResults($event)">Clear Results</a>
+    }
+</div>
 @for (book of books; track book.id) {
     <app-book-preview [book]="book"></app-book-preview>
 }
