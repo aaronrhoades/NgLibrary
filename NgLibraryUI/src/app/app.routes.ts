@@ -27,6 +27,11 @@ export const routes: Routes = [
         canActivate: [authGuard],
     },
     { 
+        path: 'book/new',
+        component: BookEditComponent,
+        canActivate: [authGuard],
+    },
+    { 
         path: 'book/:id',
         component: BookDetailsComponent,
         canActivate: [authGuard],

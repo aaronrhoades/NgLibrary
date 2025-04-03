@@ -1,13 +1,17 @@
-<div class="d-flex justify-content-end">
-    <div>
-        <button class="btn btn-danger" (click)="deleteBookMessage()">Delete</button>
+@if(!isNew) {
+    <div class="d-flex justify-content-end">
+        <div>
+            <button class="btn btn-danger" (click)="deleteBookMessage()">Delete</button>
+        </div>
     </div>
-</div>
+}
 <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-        <label for="id">ID</label>
-        <input id="id" type="text" class="form-control" formControlName="id" />
-    </div>
+    @if(!isNew) {
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input id="id" type="text" class="form-control" formControlName="id" />
+        </div>
+    }
     <div class="form-group">
         <label for="title">Title</label>
         <input id="title" type="text" class="form-control" formControlName="title" required />

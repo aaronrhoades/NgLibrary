@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { of, switchMap } from 'rxjs';
 import { Book } from '../../models/book';
 import { ToastType } from '../../models/toast';
 import { ToastService } from '../../shared/services/toast.service';
@@ -21,7 +21,7 @@ export class BookEditComponent implements OnInit {
   modalSubmitAction: () => void | null = this.cancelBookEdit;
   modal: Modal = new Modal();
   showModal: boolean = false;
-
+  isNew: boolean = false;
   bookForm = new FormGroup({
         id: new FormControl({ value: '', disabled: true }),
         description: new FormControl(''),
@@ -47,41 +47,55 @@ export class BookEditComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.pipe(
       switchMap(params => {
-        const bookId = String(params.get('id'));
-        return this.bookService.getBookById(bookId);
+        if(params.has('id')){  
+          const bookId = String(params.get('id'));
+          return this.bookService.getBookById(bookId);
+        } else {
+          this.isNew = true;
+          let book = new Book();
+          book.totalCount = 1;
+          book.available = 1;
+          return of(null)
+        }
       })
     ).subscribe(book => {
-      this.book = book;
-      const publishedDate = new Date(book.publishedDate);
-      //since toISOString adjusts timezone, prevent off by 1 day due to conversion of time zone
-      const offset = publishedDate.getTimezoneOffset(); 
-      let formattedPublishedDate = new Date(publishedDate.getTime() - (offset*60*1000)).toISOString().split('T')[0];
+      if(book != null){
+        this.book = book;
+        const publishedDate = new Date(book.publishedDate);
+        //since toISOString adjusts timezone, prevent off by 1 day due to conversion of time zone
+        const offset = publishedDate.getTimezoneOffset(); 
+        let formattedPublishedDate = new Date(publishedDate.getTime() - (offset*60*1000)).toISOString().split('T')[0];
 
-      this.bookForm.patchValue({
-        id: book.id,
-        title: book.title,        
-        description: book.description,
-        coverImg: book.coverImg,
-        author: book.author,
-        publisher: book.publisher,
-        publishedDate: formattedPublishedDate, // Convert to YYYY-MM-DD format;
-        category: book.category,
-        isbn: book.isbn,
-        pageCount: book.pageCount,
-        available: book.available,
-        totalCount: book.totalCount
-      })
+        this.bookForm.patchValue({
+          id: book.id,
+          title: book.title,        
+          description: book.description,
+          coverImg: book.coverImg,
+          author: book.author,
+          publisher: book.publisher,
+          publishedDate: formattedPublishedDate, // Convert to YYYY-MM-DD format;
+          category: book.category,
+          isbn: book.isbn,
+          pageCount: book.pageCount,
+          available: book.available,
+          totalCount: book.totalCount
+        })
+      } else {
+        this.bookForm.patchValue({
+          available: 1,
+          totalCount: 1
+        });
+      }
     });
   }
 
   onSubmit() {
     
-    if (this.bookForm.valid) {
+    if (this.bookForm.valid && !this.isNew) {
       const updatedBook: Book = {
         id: this.book.id,
         ...this.bookForm.value
         , publishedDate: new Date(this.bookForm.value.publishedDate!),
-
       } as Book; // Cast the form value to Book type
       this.bookService.updateBook(updatedBook).subscribe({
         next: () => {
@@ -92,6 +106,18 @@ export class BookEditComponent implements OnInit {
           // TODO: Handle update error here, such as displaying an error message to the user
           console.error('Update failed!', error);
         }
+      });
+    } else if (this.bookForm.valid && this.isNew) {
+      const newBook: Book = {
+        ...this.bookForm.value
+        , publishedDate: new Date(this.bookForm.value.publishedDate!),
+      } as Book;
+
+      this.bookService.createBook(newBook).subscribe({
+        next:(response) => {
+          this.toastService.updateToast({body: "Book created successfully.", type: ToastType.success, duration: 8000});
+          this.router.navigateByUrl(`/book/${response.id}`);
+        },
       });
     } else {
       console.error('bookForm is invalid!', this.bookForm.errors);
@@ -106,7 +132,11 @@ export class BookEditComponent implements OnInit {
   }
 
   cancelBookEdit() {
-    this.router.navigateByUrl(`/book/${this.book.id}`);
+    if(this.isNew) {
+      this.router.navigateByUrl('/');
+    } else {
+      this.router.navigateByUrl(`/book/${this.book.id}`);
+    }
   }
 
   cancelBookEditMessage() {

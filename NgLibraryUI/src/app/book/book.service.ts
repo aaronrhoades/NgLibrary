@@ -28,6 +28,10 @@ export class BookService {
     return this.http.get<Book>(`${this.apiUrl}/Book/${id}`);
   }
 
+  public createBook(book: Book): Observable<Book> {
+    return this.http.post<Book>(`${this.apiUrl}/Book/`, book);
+  }
+
   public updateBook(book: Book): Observable<HttpResponse<Book>> {
     return this.http.put<HttpResponse<Book>>(`${this.apiUrl}/Book/${book.id}`, book);
   }
