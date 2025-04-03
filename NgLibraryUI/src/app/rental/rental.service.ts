@@ -59,4 +59,12 @@ export class RentalService {
   public getRentalsByUserId(userId: string): Observable<Rental[]> {
     return this.http.get<Rental[]>(this.apiUrl+'/Rental/' + userId);
   }
+
+  public getAllRentals(): Observable<Rental[]> {
+    return this.http.get<Rental[]>(this.apiUrl+'/Rental');
+  }
+
+  public returnBook(userId: string, bookId: string): Observable<Rental> {
+    return this.http.delete<Rental>(`${this.apiUrl}/Rental/${userId}/${bookId}`)
+  }
 }

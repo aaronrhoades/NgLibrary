@@ -8,7 +8,17 @@
 </div>
 <h2>Actions</h2>
 @if(userRole() === 'Customer') {
-    <a routerLink="/books" class="btn btn-primary">View All Books</a>
+    <div class="my-3">
+        <a routerLink="/books" class="btn btn-primary">View All Books</a>
+    </div>
+    <div class="my-3">
+        <a routerLink="/rentals" class="btn btn-primary">My Rentals</a>
+    </div>
 } @else if (userRole() === 'Librarian') {
-    <a routerLink="/books" class="btn btn-primary">View All Books</a>
+    <div class="my-3">
+        <a routerLink="/books" class="btn btn-primary">View All Books</a>
+    </div>
+    <div class="my-3">
+        <a routerLink="/rentals/manage" class="btn btn-primary">Manage Rentals</a>
+    </div>
 }

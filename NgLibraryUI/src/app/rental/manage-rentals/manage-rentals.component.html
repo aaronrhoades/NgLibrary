@@ -1,0 +1,29 @@
+<h1 class="my-5">Manage Rentals</h1>
+@if(rentalBooks.length){
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">User ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Due Date</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(rental of rentalBooks; track rental.bookId + rental.userId) {
+                <tr>
+                    <td>{{rental.userId}}</td>
+                    <td>{{rental.title}}</td>
+                    <td>{{rental.author}}</td>
+                    <td>{{rental.dueDate | date}}</td>
+                    <td><button class="btn btn-primary" (click)="return(rental.userId, rental.bookId, $event)">Return</button></td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+} @else {
+    <p>No rentals found.</p>
+}

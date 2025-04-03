@@ -8,6 +8,7 @@ import { BookEditComponent } from './book/book-edit/book-edit.component';
 import { RentalsComponent } from './rental/rentals/rentals.component';
 import { RentalCartComponent } from './rental/rental-cart/rental-cart.component';
 import { AddUserRoleComponent } from './auth/add-user-role/add-user-role.component';
+import { ManageRentalsComponent } from './rental/manage-rentals/manage-rentals.component';
 
 
 export const routes: Routes = [
@@ -43,6 +44,11 @@ export const routes: Routes = [
     { 
         path: 'rentals/cart',
         component: RentalCartComponent,
+        canActivate: [authGuard],
+    },
+    { 
+        path: 'rentals/manage',
+        component: ManageRentalsComponent,
         canActivate: [authGuard],
     },
     { 

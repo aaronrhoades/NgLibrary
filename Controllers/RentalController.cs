@@ -104,9 +104,14 @@ namespace NgLibrary.Controllers
             {
                 return NotFound();
             }
+
+            var book = await _context.Books.SingleAsync<Book>(b => b.Id == bookId);
+            book.Available = book.Available + 1;
+
             _context.Rentals.Remove(rental);
             await _context.SaveChangesAsync();
-            return Ok();
+
+            return Ok(rental);
         }
 
     }
