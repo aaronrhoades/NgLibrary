@@ -10,6 +10,7 @@ import { RentalCartComponent } from './rental/rental-cart/rental-cart.component'
 import { AddUserRoleComponent } from './auth/add-user-role/add-user-role.component';
 import { ManageRentalsComponent } from './rental/manage-rentals/manage-rentals.component';
 import { ReviewEditComponent } from './review/review-edit/review-edit.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 export const routes: Routes = [
@@ -67,6 +68,10 @@ export const routes: Routes = [
         component: AddUserRoleComponent,
         canActivate: [authGuard],
     },
+    {
+        path: '**',
+        component: PageNotFoundComponent,
+    }
     
     
 ];
