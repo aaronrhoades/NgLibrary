@@ -1,10 +1,9 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { Book } from '../models/book';
 import { Rental } from '../models/rental';
-import { AuthService } from '../auth/auth.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ToastService } from '../shared/services/toast.service';
 import { ToastType } from '../models/toast';
 
@@ -27,11 +26,20 @@ export class RentalService {
       this.rentalCart.update(books => {
         books.push(book);
         this.toastService.updateToast({body: `${book.title} has been added to your cart`, type: ToastType.success, duration: 8000});
+        localStorage.setItem('rentalCart', JSON.stringify(books));
 
         return books;
       });
     }
   }
+
+  public getRentalCartFromLocalStorage() {
+    const rentalCart = localStorage.getItem('rentalCart');
+    if(rentalCart) {
+      this.rentalCart.set(JSON.parse(rentalCart) as Book[]);
+    }
+  }
+
   public removeFromRentalCart(book: Book) {
     this.rentalCart.update(books => books.filter(b => b.id !== book.id));
   }
@@ -42,6 +50,7 @@ export class RentalService {
 
   public clearRentalCart() {
     this.rentalCart.set([]);
+    localStorage.removeItem('rentalCart');
   }
 
   public checkout(): Observable<HttpResponse<Rental[]>> {
@@ -53,7 +62,11 @@ export class RentalService {
 
       return rental;
     });
-    return this.http.post<HttpResponse<Rental[]>>(this.apiUrl+'/Rental',rentals);
+    return this.http.post<HttpResponse<Rental[]>>(this.apiUrl+'/Rental',rentals)
+    .pipe(tap(() => {
+      this.clearRentalCart();
+      this.toastService.updateToast({body: 'Your books have been checked out', type: ToastType.success, duration: 8000});
+    }));
   }
 
   public getRentalsByUserId(userId: string): Observable<Rental[]> {

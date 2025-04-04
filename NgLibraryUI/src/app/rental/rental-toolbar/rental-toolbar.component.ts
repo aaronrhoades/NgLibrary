@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RentalService } from '../rental.service';
 import { Book } from '../../models/book';
@@ -11,7 +11,7 @@ import { I18nPluralPipe } from '@angular/common';
   templateUrl: './rental-toolbar.component.html',
   styleUrl: './rental-toolbar.component.css'
 })
-export class RentalToolbarComponent {
+export class RentalToolbarComponent implements OnInit {
   rentalService = inject(RentalService);
   rentals: Signal<Book[]> = this.rentalService.getRentalCart();
 
@@ -20,4 +20,8 @@ export class RentalToolbarComponent {
     '=1': 'item',
     'other': 'items',
   };
+
+  ngOnInit() {
+    this.rentalService.getRentalCartFromLocalStorage();
+  }
 }
