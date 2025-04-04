@@ -5,6 +5,23 @@
             Search
         </button>
     </div>
+    <div class="row my-3">
+        <div class="col">
+          <select name="sortBy" id="sortBy" class="form-select" [(ngModel)]="sortTerm" (change)="sortBooks($event)">
+            <option value="none" selected>Sort By</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+          </select>
+        </div>
+        <div class="col">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" [(ngModel)]="hideUnavailable" (change)="processHideUnavailableBooks($event)">
+                <label class="form-check-label" for="defaultCheck1">
+                  Hide Unavailable Books
+                </label>
+              </div>
+        </div>
+      </div>
 </div>
 @if(resultsTerm.length > 0) {
     <h1>Results matching "{{resultsTerm}}"...</h1>
@@ -12,6 +29,6 @@
 @if(showClearButton){
     <a href="#" (click)="clearResults($event)">Clear Search</a>
 }
-@for (book of books; track book.id) {
+@for (book of booksFiltered; track book.id) {
     <app-book-preview [book]="book"></app-book-preview>
 }

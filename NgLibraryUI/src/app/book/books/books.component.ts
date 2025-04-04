@@ -14,53 +14,81 @@ import { take } from 'rxjs';
 })
 export class BooksComponent {
   books: Book[] = [];
+  booksFiltered: Book[] = [];
   searchTerm: string = '';
+  sortTerm: string = 'none';
+  hideUnavailable: boolean = false;
   resultsTerm: string = '';
   showClearButton: boolean = false;
 
   constructor(private bookService: BookService) { }
 
   ngOnInit() {
-    this.bookService.getAllBooks().subscribe({
-      next: (books) => {
-        this.books = books
-      },
-      error: (error) => {
-        console.error('Failed to retrieve books!', error);
-        // Handle the error here, such as displaying an error message to the user
-      }
-    });
+    this.getAllBooks();
   }
 
   searchBooks() {
     const searchString = this.searchTerm.trim();
     if(searchString === ''){
-      this.bookService.getAllBooks().pipe(take(1)).subscribe(
-        books => this.books = books
-      );
+      this.clearResults();
     } else { 
       this.showClearButton = true;
       this.resultsTerm = searchString;
       this.bookService.searchByTitle(searchString).pipe(take(1)).subscribe(
-        books => this.books = books
+        books => {
+          this.books = books
+          this.booksFiltered = books;
+          this.processHideUnavailableBooks();
+          this.sortBooks();
+        }
       );
     }
   }
-  
+
   onKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.searchBooks();
     }
   }
 
-  clearResults(event: Event) {
-    event.preventDefault();
-    this.showClearButton = false;
-    this.searchTerm = '';
-    this.resultsTerm = '';
-    this.bookService.getAllBooks().pipe(take(1)).subscribe(
-      books => this.books = books
-    );
-    
+  clearResults(event?: Event) {
+    event?.preventDefault();
+    this.getAllBooks();
+  }
+
+  sortBooks(event?: Event) {
+    event?.preventDefault();
+    const sortBy = this.sortTerm;
+    if(sortBy === 'title') {
+      this.booksFiltered.sort((a, b) => a.title.localeCompare(b.title));
+    } else if(sortBy === 'author') {
+      this.booksFiltered.sort((a, b) => a.author.localeCompare(b.author));
+    } else if(sortBy === 'none') {
+      this.getAllBooks();
+    }
+  }
+
+  processHideUnavailableBooks(event?: Event) {
+    event?.preventDefault();
+    const isChecked = this.hideUnavailable;
+    if(isChecked) {
+      this.booksFiltered = this.books.filter((book) => {
+        return book.available > 0;
+      });
+    } else {
+      this.booksFiltered = this.books;
+    }
+  }
+
+  getAllBooks() {
+    this.bookService.getAllBooks().pipe(take(1)).subscribe(books => {
+      this.showClearButton = false;
+      this.books = books;
+      this.booksFiltered = books;
+      this.searchTerm = '';
+      this.resultsTerm = '';
+      this.sortBooks();
+      this.processHideUnavailableBooks();
+    });
   }
 }
