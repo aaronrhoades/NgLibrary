@@ -41,7 +41,7 @@ namespace NgLibrary.Controllers
         public async Task<ActionResult<List<getFeaturedBookDto>>> GetFeaturedBooks() {
             var books = await _context.Books.ToListAsync();
             //TODO: real randomize
-            var featuredBooks = books.OrderBy(b => b.ISBN).Take(3);
+            var featuredBooks = books.OrderBy(b => b.ISBN).Take(9);
             List<getFeaturedBookDto> featuredBookDtos = new List<getFeaturedBookDto>();
             foreach (var featuredBook in featuredBooks)
             {
