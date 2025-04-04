@@ -63,8 +63,10 @@ export class BooksComponent {
       this.booksFiltered.sort((a, b) => a.title.localeCompare(b.title));
     } else if(sortBy === 'author') {
       this.booksFiltered.sort((a, b) => a.author.localeCompare(b.author));
+    } else if(sortBy === 'available') {
+      this.booksFiltered.sort((a, b) => b.available - a.available);
     } else if(sortBy === 'none') {
-      this.getAllBooks();
+      this.booksFiltered = this.books;
     }
   }
 
@@ -81,12 +83,13 @@ export class BooksComponent {
   }
 
   getAllBooks() {
+    this.searchTerm = '';
+    this.resultsTerm = '';
+    
     this.bookService.getAllBooks().pipe(take(1)).subscribe(books => {
       this.showClearButton = false;
       this.books = books;
       this.booksFiltered = books;
-      this.searchTerm = '';
-      this.resultsTerm = '';
       this.sortBooks();
       this.processHideUnavailableBooks();
     });

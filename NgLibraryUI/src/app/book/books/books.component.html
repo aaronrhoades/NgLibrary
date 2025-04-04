@@ -8,9 +8,10 @@
     <div class="row my-3">
         <div class="col">
           <select name="sortBy" id="sortBy" class="form-select" [(ngModel)]="sortTerm" (change)="sortBooks($event)">
-            <option value="none" selected>Sort By</option>
+            <option value="none" disabled selected>Sort By</option>
             <option value="title">Title</option>
             <option value="author">Author</option>
+            <option value="available">Available</option>
           </select>
         </div>
         <div class="col">
