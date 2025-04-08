@@ -5,6 +5,8 @@ import { BookService } from '../../book/book.service';
 import { AuthService } from '../../auth/auth.service';
 import { forkJoin, of, switchMap } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { ToastService } from '../../shared/services/toast.service';
+import { ToastType } from '../../models/toast';
 
 @Component({
   selector: 'app-manage-rentals',
@@ -17,6 +19,7 @@ export class ManageRentalsComponent {
   rentalService = inject(RentalService);
   bookService = inject(BookService);
   authService = inject(AuthService);
+  toastService = inject(ToastService);
   rentalBooks: RentalBook[] = [];
 
   ngOnInit() : void {
@@ -44,7 +47,7 @@ export class ManageRentalsComponent {
     }
   }
 
-  return(userId: string, bookId: string, event:Event) {
+  returnBook(userId: string, bookId: string, event:Event) {
     const returnButton = event.target as HTMLButtonElement;
     returnButton.disabled = true;
 
@@ -53,7 +56,25 @@ export class ManageRentalsComponent {
         this.rentalBooks = this.rentalBooks.filter(
           rental => !(rental.bookId === success.bookId && rental.userId === success.userId)
         );
+        this.toastService.updateToast({
+          type: ToastType.success, 
+          body: 'Book returned successfully!',
+          duration: 8000
+      });
+    },
+      error: err => {
+        this.toastService.updateToast({
+          type: ToastType.danger, 
+          body: 'Error returning book!',
+          duration: 8000
+        });
+        console.error(err);
+        returnButton.disabled = false;
+      },
+      complete: () => {
+        returnButton.disabled = false;
       }
+
     });
   }
 }

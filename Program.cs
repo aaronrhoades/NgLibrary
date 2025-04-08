@@ -22,9 +22,9 @@ builder.Services.AddCors(options =>
 });
 
 //add auth and identity
-builder.Services.AddAuthorization();
 builder.Services.AddAuthentication()
     .AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorization();
 builder.Services.AddIdentityCore<User>()
   .AddRoles<IdentityRole>()
   .AddEntityFrameworkStores<DataContext>()

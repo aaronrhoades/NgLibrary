@@ -79,6 +79,7 @@ namespace NgLibrary.Controllers
 
         // PUT: RentalController/5
         [HttpPut("{userId}/{bookId}")]
+        [Authorize(Roles = "Librarian")]
         public async Task<ActionResult<Rental>> UpdateRental(string userId, string bookId, updateRentalDto updateRentalDto)
         {
             var rental = await _context.Rentals.Where(r => (r.UserId == userId && r.BookId == bookId)).SingleOrDefaultAsync();
@@ -96,6 +97,7 @@ namespace NgLibrary.Controllers
         }
 
         [HttpDelete("{userId}/{bookId}")]
+        [Authorize (Roles="Librarian")]
         public async Task<ActionResult<Rental>> DeleteRental(string userId, string bookId)
         {
             

@@ -17,7 +17,7 @@
                     <td>{{rental.title}}</td>
                     <td>{{rental.author}}</td>
                     <td>{{rental.dueDate | date}}</td>
-                    <td><button class="btn btn-primary" (click)="return(rental.userId, rental.bookId, $event)">Return</button></td>
+                    <td><button class="btn btn-primary" (click)="returnBook(rental.userId, rental.bookId, $event)">Return</button></td>
                 </tr>
             }
         </tbody>

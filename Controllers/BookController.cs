@@ -101,6 +101,7 @@ namespace NgLibrary.Controllers
 
         // POST: BookController
         [HttpPost]
+        [Authorize(Roles="Librarian")]
         public async Task<ActionResult<Book>> CreateBook(addBookDto addBookDto) {
             var book = new Book();
             book.Id = Guid.NewGuid().ToString();
@@ -125,6 +126,7 @@ namespace NgLibrary.Controllers
 
         // PUT: BookController/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Librarian")]
         public async Task<ActionResult<Book>> UpdateBook(string id, updateBookDto updateBookDto)
         {
             var book = await _context.Books.FindAsync(id);
@@ -149,6 +151,7 @@ namespace NgLibrary.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Librarian")]
         public async Task<ActionResult<Book>> DeleteBook(string id)
         {
             var book = await _context.Books.FindAsync(id);
