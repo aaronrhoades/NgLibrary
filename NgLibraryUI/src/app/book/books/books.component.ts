@@ -38,8 +38,7 @@ export class BooksComponent {
         books => {
           this.books = books
           this.booksFiltered = books;
-          this.processHideUnavailableBooks();
-          this.sortBooks();
+          this.sortAndFilterBooks();
         }
       );
     }
@@ -56,29 +55,29 @@ export class BooksComponent {
     this.getAllBooks();
   }
 
-  sortBooks(event?: Event) {
+  sortAndFilterBooks(event?: Event) {
     event?.preventDefault();
     const sortBy = this.sortTerm;
+    const books = [...this.books];
     if(sortBy === 'title') {
-      this.booksFiltered.sort((a, b) => a.title.localeCompare(b.title));
+      this.booksFiltered = books.sort((a, b) => a.title.localeCompare(b.title));
     } else if(sortBy === 'author') {
-      this.booksFiltered.sort((a, b) => a.author.localeCompare(b.author));
+      this.booksFiltered = books.sort((a, b) => a.author.localeCompare(b.author));
     } else if(sortBy === 'available') {
-      this.booksFiltered.sort((a, b) => b.available - a.available);
+      this.booksFiltered = books.sort((a, b) => b.available - a.available);
     } else if(sortBy === 'none') {
       this.booksFiltered = this.books;
     }
+    this.processHideUnavailableBooks();
   }
 
   processHideUnavailableBooks(event?: Event) {
     event?.preventDefault();
     const isChecked = this.hideUnavailable;
     if(isChecked) {
-      this.booksFiltered = this.books.filter((book) => {
+      this.booksFiltered = this.booksFiltered.filter((book) => {
         return book.available > 0;
       });
-    } else {
-      this.booksFiltered = this.books;
     }
   }
 
@@ -90,8 +89,7 @@ export class BooksComponent {
       this.showClearButton = false;
       this.books = books;
       this.booksFiltered = books;
-      this.sortBooks();
-      this.processHideUnavailableBooks();
+      this.sortAndFilterBooks();
     });
   }
 }
